@@ -1,0 +1,98 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Socket.IO chat</title>
+    <style>
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      body { font: 13px Helvetica, Arial; }
+      .page {
+      	width: 100%;
+    	height: 100vh;
+    	padding: 30px;
+      	color: #fff;
+      	text-align: center;
+      }
+      #waiting {
+      	background-color: #F80;
+      }
+      #timeRemaining{
+      	font-size: 80px;
+      }
+      #playing {
+      	background-color: #08F;
+      	display: none;
+      }
+      #playing input{
+      	display: block;
+      	clear: both;
+      	margin-bottom: 30px;
+		margin-right: auto;
+		margin-left: auto;
+      }
+    </style>
+  </head>
+  <body>
+  	<div class="page" id="waiting">
+  		<div id="waitingMessage">Prepare-se para alterar o logo do ThinkLab no palco.</div>
+  		Tempo restante para sua vez: <div id="timeRemaining"></div>
+	</div>
+	<div class="page" id="playing">
+		Label 1: <input type="range" min="0" max="100" value="50" class="slider" id="spikes">
+		Label 2: <input type="range" min="0" max="100" value="50" class="slider" id="length">
+		Label 3: <input type="range" min="0" max="100" value="50" class="slider" id="phase">
+		Label 4: <input type="range" min="0" max="100" value="50" class="slider" id="radius">
+		Label 5: <input type="range" min="0" max="100" value="50" class="slider" id="outterRadius">
+	</div>
+	<script src="/socket.io/socket.io.js"></script>
+	<script src="./jquery-1.11.1.min.js"></script>
+	<script>
+	  $(function () {
+	    var socket = io();
+
+	    var pageWaiting = $("#waiting");
+	    var pagePlaying = $("#playing");
+	    var timeRemaining = $("#timeRemaining");
+
+	    var sliders = ["spikes", "length", "phase", "radius", "outterRadius"];
+
+	    socket.on('connect', function(time){
+	      socket.emit('client');
+	    });
+	    socket.on('time', function(time){
+	      console.log(time);
+	      timeRemaining.html(Math.round(time));
+	    });
+	    socket.on('start', function(){
+	      console.log('start');
+	      pageWaiting.hide();
+	      pagePlaying.show();
+		    sliders.forEach(function(value){
+		    	$("#" + value).val("50");
+		    });
+	    });
+	    socket.on('finish', function(){
+	      console.log('finish');
+	      pageWaiting.show();
+	      pagePlaying.hide();
+	    });
+	    function listenSlider(name){
+	    	var slider = $("#" + name);
+	    	function onChange(){
+		      socket.emit(name, slider.val());
+	    	}
+			slider.bind("mousedown", function() {
+				onChange();
+				slider.bind("mousemove", onChange);
+			});
+			slider.bind("mouseup", function() {
+				slider.unbind("mousemove", onChange);
+			});
+			slider.bind("keydown", onChange);
+	    }
+	    sliders.forEach(function(value){
+	    	listenSlider(value);
+	    });
+	  });
+	</script>
+  </body>
+</html>

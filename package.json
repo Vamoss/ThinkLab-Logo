@@ -1,0 +1,9 @@
+{
+  "name": "ThinkLab-Logo",
+  "version": "0.0.1",
+  "description": "Realtime multiuser controlling a logo distortion",
+  "dependencies": {
+    "express": "^4.17.1",
+    "socket.io": "^2.2.0"
+  }
+}
