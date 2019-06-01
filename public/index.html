@@ -23,10 +23,12 @@
       	background-color: #08F;
       	display: none;
       }
+      #playing div{
+      	height: 20%;
+      }
       #playing input{
       	display: block;
       	clear: both;
-      	margin-bottom: 80px;
 		margin-right: auto;
 		margin-left: auto;
 		width: 100%;
@@ -39,11 +41,11 @@
   		Tempo restante para sua vez: <div id="timeRemaining"></div>
 	</div>
 	<div class="page" id="playing">
-		Label 1: <input type="range" min="0" max="100" value="50" class="slider" id="spikes">
-		Label 2: <input type="range" min="0" max="100" value="50" class="slider" id="length">
-		Label 3: <input type="range" min="0" max="100" value="50" class="slider" id="phase">
-		Label 4: <input type="range" min="0" max="100" value="50" class="slider" id="radius">
-		Label 5: <input type="range" min="0" max="100" value="50" class="slider" id="outterRadius">
+		<div>Label 1: <input type="range" min="0" max="100" value="50" class="slider" id="spikes"></div>
+		<div>Label 2: <input type="range" min="0" max="100" value="50" class="slider" id="length"></div>
+		<div>Label 3: <input type="range" min="0" max="100" value="50" class="slider" id="phase"></div>
+		<div>Label 4: <input type="range" min="0" max="100" value="50" class="slider" id="radius"></div>
+		<div>Label 5: <input type="range" min="0" max="100" value="50" class="slider" id="outterRadius"></div>
 	</div>
 	<script src="/socket.io/socket.io.js"></script>
 	<script src="./jquery-1.11.1.min.js"></script>
