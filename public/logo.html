@@ -62,7 +62,7 @@
         socket.emit('master');
       });
       socket.on('spikes', function(val){
-        config.spikes = map(val, 0, 100, 1, 30);
+        config.spikes = Math.floor(map(val, 0, 100, 1, 30));
       });
       socket.on('length', function(val){
         config.length = map(val, 0, 100, 0, TWO_PI);
