@@ -26,6 +26,7 @@ Client.prototype.play = function(){
 Client.prototype.stop = function(){
 	this.playing = false;
 	this.socket.emit('finish');
+	sendToMaster('reset', 0);
 }
 
 function Master (socket) {
@@ -72,8 +73,9 @@ io.on('connection', function(socket){
 	    //remove from queue
 		for(var i = queue.length-1; i >= 0; i--){
 			if(client.ID == queue[i].ID){
-				if(queue[i].isPlaying())
+				if(queue[i].isPlaying()){
 					queue[i].stop();
+				}
 				queue.splice(i, 1);
 			}
 		}

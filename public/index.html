@@ -1,7 +1,7 @@
 <!doctype html>
 <html>
   <head>
-    <title>Socket.IO chat</title>
+    <title>ThinkLab logo</title>
     <style>
       * { margin: 0; padding: 0; box-sizing: border-box; }
       body { font: 13px Helvetica, Arial; }
@@ -80,12 +80,12 @@
 	    	function onChange(){
 		      socket.emit(name, slider.val());
 	    	}
-			slider.bind("mousedown", function() {
+			slider.bind("touchstart mousedown", function() {
 				onChange();
-				slider.bind("mousemove", onChange);
+				slider.bind("mousemove touchmove", onChange);
 			});
-			slider.bind("mouseup", function() {
-				slider.unbind("mousemove", onChange);
+			slider.bind("mouseup touchend", function() {
+				slider.unbind("mousemove touchend", onChange);
 			});
 			slider.bind("keydown", onChange);
 	    }
