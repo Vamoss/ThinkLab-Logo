@@ -113,8 +113,14 @@ function update(){
 
 		var playingTime = queue[0].getPlayingTime();
 		if(playingTime > SESSION_TIME){
-			queue[0].stop();
-			queue.push(queue.shift());
+			if(queue.length==1){
+				//if the user is the only player, let him still playing
+				queue[0].time = Date.now();
+			}else{
+				queue[0].stop();
+				//move the first to the last position
+				queue.push(queue.shift());
+			}
 			update();
 			return;
 		}
