@@ -3,36 +3,45 @@ var app = express();
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
 
-class Client {
-  constructor(socket) {
-    this.socket = socket;
-    this.ID = Date.now() + String(Math.random()).substr(2, 13);
-    this.playing = false;
-  }
+function Client (socket) {
+	this.socket = socket;
+	this.ID = Date.now() + String(Math.random()).substr(2, 13);
+	this.playing = false;
+}
 
-  getPlayingTime() {
-  	return Math.floor((Date.now() - this.time)/1000);
-  }
+Client.prototype.getPlayingTime = function() {
+	return Math.floor((Date.now() - this.time)/1000);
+}
 
-  isPlaying(){
+Client.prototype.isPlaying = function(){
   	return this.playing;
-  }
+}
 
-  play(){
+Client.prototype.play = function(){
 	this.playing = true;
 	this.time = Date.now();
 	this.socket.emit('start');
-  }
-
-  stop(){
-	this.playing = false;
-	this.socket.emit('finish');
-  }
 }
 
-let queue = [];
-let master;
-let SESSION_TIME = 30;
+Client.prototype.stop = function(){
+	this.playing = false;
+	this.socket.emit('finish');
+}
+
+function Master (socket) {
+	this.socket = socket;
+	this.ID = Date.now() + String(Math.random()).substr(2, 13);
+}
+
+function sendToMaster(event, val){
+	for(var i = 0; i < masters.length; i++){
+		masters[i].socket.emit(event, val);
+	}
+}
+
+var queue = [];
+var masters = [];
+var SESSION_TIME = 30;
 
 io.on('connection', function(socket){
 
@@ -41,10 +50,15 @@ io.on('connection', function(socket){
 
   socket.on('master', function(){
   	console.log('a user is a master');
-  	master = socket;
+  	var master = new Master(socket);
+  	masters.push(master);
 
   	socket.on('disconnect', function(){
-	  master = undefined;
+		for(var i = masters.length-1; i >= 0; i--){
+			if(master.ID == masters[i].ID){
+				masters.splice(i, 1);
+			}
+		}
 	});
   });
 
@@ -66,23 +80,23 @@ io.on('connection', function(socket){
 	  });
 	  socket.on('spikes', function(val){
 	  	if(client.isPlaying())
-	    	if(master) master.emit('spikes', val);
+	    	sendToMaster('spikes', val);
 	  });
 	  socket.on('length', function(val){
 	  	if(client.isPlaying())
-	    	if(master) master.emit('length', val);
+	    	sendToMaster('length', val);
 	  });
 	  socket.on('phase', function(val){
 	  	if(client.isPlaying())
-	    	if(master) master.emit('phase', val);
+	    	sendToMaster('phase', val);
 	  });
 	  socket.on('radius', function(val){
 	  	if(client.isPlaying())
-	    	if(master) master.emit('radius', val);
+	    	sendToMaster('radius', val);
 	  });
 	  socket.on('outterRadius', function(val){
 	  	if(client.isPlaying())
-	    	if(master) master.emit('outterRadius', val);
+	    	sendToMaster('outterRadius', val);
 	  });
   });
 });
@@ -97,7 +111,7 @@ function update(){
 		if(!queue[0].isPlaying())
 			queue[0].play();
 
-		let playingTime = queue[0].getPlayingTime();
+		var playingTime = queue[0].getPlayingTime();
 		if(playingTime > SESSION_TIME){
 			queue[0].stop();
 			queue.push(queue.shift());
@@ -105,7 +119,7 @@ function update(){
 			return;
 		}
 
-		let remainingTime = SESSION_TIME - playingTime;
+		var remainingTime = SESSION_TIME - playingTime;
 
 		for(var i = 1; i < queue.length; i++){
 			queue[i].socket.emit('time', (i-1) * (SESSION_TIME+1) + remainingTime);
