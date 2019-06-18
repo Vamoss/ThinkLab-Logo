@@ -4,48 +4,165 @@
     <title>ThinkLab logo</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <style>
-      * { margin: 0; padding: 0; box-sizing: border-box; }
-      body { font: 20px Helvetica, Arial; }
-      .page {
-      	width: 100%;
-    	height: 100vh;
-    	padding: 30px;
-      	color: #fff;
-      	text-align: center;
-      }
-      #waiting {
-      	background-color: #F80;
-      }
-      #timeRemaining{
-      	font-size: 80px;
-      }
-      #playing {
-      	background-color: #08F;
-      	display: none;
-      }
-      #playing div{
-      	height: 20%;
-      }
-      #playing input{
-      	display: block;
-      	clear: both;
-		margin-right: auto;
-		margin-left: auto;
-		width: 100%;
-      }
+		@font-face {
+			font-family: 'proxima_nova_regular';
+			src: url('fonts/proximanova-regular-webfont.eot');
+			src: url('fonts/proximanova-regular-webfont.eot?#iefix') format('embedded-opentype'),
+				url('fonts/proximanova-regular-webfont.woff') format('woff'),
+				url('fonts/proximanova-regular-webfont.ttf') format('truetype'),
+				url('fonts/proximanova-regular-webfont.svg#proxima_nova_alt_rgregular') format('svg');
+			font-weight: normal;
+			font-style: normal;
+		}
+		@font-face {
+			font-family: 'proxima_nova_thin';
+			src: url('fonts/proximanova-thin-webfont.eot');
+			src: url('fonts/proximanova-thin-webfont.eot?#iefix') format('embedded-opentype'),
+				url('fonts/proximanova-thin-webfont.woff2') format('woff2'),
+				url('fonts/proximanova-thin-webfont.woff') format('woff'),
+				url('fonts/proximanova-thin-webfont.ttf') format('truetype'),
+				url('fonts/proximanova-thin-webfont.svg#proxima_nova_ththin') format('svg');
+			font-weight: normal;
+			font-style: normal;
+		}
+		* {
+			margin: 0;
+			padding: 0;
+			box-sizing: border-box;
+			font: 20px proxima_nova_thin, Helvetica, Arial;
+			-webkit-user-select: none; /* Chrome all / Safari all */
+			-moz-user-select: none;   /* Firefox all */
+			-ms-user-select: none;  /* IE 10+ */
+			user-select: none;  /* Likely future */ 
+		}
+		b{
+			font: 20px proxima_nova_regular, Helvetica, Arial;
+		}
+		button{
+			background-color: #FFF;
+			border: 1px solid #26A8FF;
+			color: #26A8FF;
+			padding: 8px 20px;
+			margin: 20px;
+			-webkit-border-radius: 30px;
+			-moz-border-radius: 30px;
+			border-radius: 30px;
+			font-family: proxima_nova_regular, Helvetica, Arial;
+		}
+		.page {
+			width: 100%;
+			min-height: 100vh;
+			padding: 30px;
+			display: flex;
+		    align-items: center;
+		    justify-content: center;
+			text-align: center;
+		}
+		.container {
+			background-color: #fff;
+			-webkit-box-shadow: 0px 3px 6px 0px rgba(0,0,0,0.16);
+			-moz-box-shadow: 0px 3px 6px 0px rgba(0,0,0,0.16);
+			box-shadow: 0px 3px 6px 0px rgba(0,0,0,0.16);
+			-webkit-border-radius: 10px;
+			-moz-border-radius: 10px;
+			border-radius: 10px;
+		}
+		#waiting {
+			background-image: linear-gradient(#08E3FF, #6D1FFF);
+		}
+		#waiting .container{
+			padding-top: 20%;
+		}
+		#waitingMessage{
+			font-size: 28px;
+			margin: 20%;
+			margin-top: 10%;
+		}
+		#timeRemaining{
+
+		}
+		#playing {
+			background-image: linear-gradient(#1CBDFF, #436FFF);
+			display: none;
+		}
+		#playing .container{
+			padding: 10% 0;
+		}
+		#playing .container img{
+			width: 80%;
+		}
+		#playing .property{
+			height: 65px;
+			text-align: left;
+			margin: 10%;
+			margin-bottom: 0px;
+			margin-top: 20px;
+		}
+		#playing .slider{
+			display: block;
+			clear: both;
+			margin-right: auto;
+			margin-left: auto;
+			margin-top: 15px;
+			width: 100%;
+			background-image: linear-gradient(#436FFF, #1CBDFF);
+			height: 10px;
+			position: relative;
+			-webkit-border-radius: 5px;
+			-moz-border-radius: 5px;
+			border-radius: 5px;
+		}
+		#playing .slider .tracker{
+			width: 60px;
+			height: 30px;
+			border: 1px solid #ddd;
+			background-color: #fff;
+			-webkit-box-shadow: 1px 2px 2px 0px rgba(0,0,0,0.35);
+			-moz-box-shadow: 1px 2px 2px 0px rgba(0,0,0,0.35);
+			box-shadow: 1px 2px 2px 0px rgba(0,0,0,0.35);
+			-webkit-border-radius: 30px;
+			-moz-border-radius: 30px;
+			border-radius: 30px;
+			position: absolute;
+			top: -10px;
+			left: 50%;
+		}
+		#playing .slider .value{
+			font: 18px proxima_nova_regular, Helvetica, Arial;
+			text-align: center;
+    		background-image: linear-gradient(90deg, #F5F4F4, #FFFFFF, #DBDBDB);
+			-webkit-border-radius: 30px;
+			-moz-border-radius: 30px;
+			border-radius: 30px;
+			margin-top: 1px;
+			height: 26px;
+			width: 50px;
+			margin-left: 5px;
+			padding-top: 3px;
+		}
+		#playing #waitingMessage2{
+			margin-top: 20px;
+		}
     </style>
   </head>
   <body>
   	<div class="page" id="waiting">
-  		<div id="waitingMessage">Prepare-se para alterar o logo do ThinkLab no palco.</div>
-  		Tempo restante para sua vez: <div id="timeRemaining"></div>
+  		<div class="container">
+  			<img src="images/logo-200x200.png" width="140" height="140" />
+	  		<div id="waitingMessage">Olá, você irá interagir com a marca em <b id="timeRemaining"></b> segundos.</div>
+	  	</div>
 	</div>
 	<div class="page" id="playing">
-		<div>Label 1: <input type="range" min="0" max="100" value="50" class="slider" id="spikes"></div>
-		<div>Label 2: <input type="range" min="0" max="100" value="50" class="slider" id="length"></div>
-		<div>Label 3: <input type="range" min="0" max="100" value="50" class="slider" id="phase"></div>
-		<div>Label 4: <input type="range" min="0" max="100" value="50" class="slider" id="radius"></div>
-		<div>Label 5: <input type="range" min="0" max="100" value="50" class="slider" id="outterRadius"></div>
+  		<div class="container">
+  			<img src="images/thinkrio-full.png" />
+			<div class="property">Diversidade: <div class="slider" id="spikes"><div class="tracker"><div class="value">0</div></div></div></div>
+			<div class="property">Inovação: <div class="slider" id="length"><div class="tracker"><div class="value">0</div></div></div></div>
+			<div class="property">Sustentabilidade: <div class="slider" id="phase"><div class="tracker"><div class="value">0</div></div></div></div>
+			<div class="property">Experiência: <div class="slider" id="radius"><div class="tracker"><div class="value">0</div></div></div></div>
+			<div class="property">Pesquisa: <div class="slider" id="outterRadius"><div class="tracker"><div class="value">0</div></div></div></div>
+	  		<div id="waitingMessage2">Você ainda tem <b id="timeRemaining2"></b> segundos.</div>
+	  		<button id="btClose">Encerrar</button>
+		</div>
 	</div>
 	<script src="/socket.io/socket.io.js"></script>
 	<script src="./jquery-1.11.1.min.js"></script>
@@ -58,6 +175,42 @@
 	    var timeRemaining = $("#timeRemaining");
 
 	    var sliders = ["spikes", "length", "phase", "radius", "outterRadius"];
+	    var iniVals = [0.4482758620689655, 0.711, 0.393, 0.33, 0.83];
+	    var setVals = {};
+	    function listenSlider(name){
+	    	var slider = $("#" + name);
+	    	var tracker = slider.children(".tracker");
+	    	var value = tracker.children(".value");
+	    	var mouseContainer = $(window);
+	    	var valX = 0.5;
+	    	var pressX = 0;
+	    	function setVal(val){
+	    		valX = val;
+	    		if(valX<0) valX = 0;
+	    		if(valX>1) valX = 1;
+		    	var trackerPctWidth = tracker.width() / slider.width();
+	      		tracker.css('left', ((valX*(1-trackerPctWidth))*100) + '%');
+	      		let label = Math.floor(valX*100);
+	      		value.text(label);
+		    	socket.emit(name, valX * 100);
+	    	}
+	    	function onChange(e){
+	    		let tempX = e.originalEvent instanceof TouchEvent ? e.originalEvent.touches[0].pageX : e.pageX;
+	    		setVal(valX + (tempX - pressX) / slider.width());
+	    		pressX = tempX;
+	    	}
+			slider.bind("touchstart mousedown", e => {
+	    		pressX = e.originalEvent instanceof TouchEvent ? e.originalEvent.touches[0].pageX : e.pageX;
+				mouseContainer.bind("mousemove touchmove", onChange);
+			});
+			mouseContainer.bind("mouseup touchend", e => {
+				mouseContainer.unbind("mousemove touchmove", onChange);
+			});
+	    	return setVal;
+	    }
+	    sliders.forEach(function(value){
+	    	setVals[value] = listenSlider(value);
+	    });
 
 	    socket.on('connect', function(time){
 	      socket.emit('client');
@@ -69,32 +222,15 @@
 	    socket.on('start', function(){
 	      console.log('start');
 	      pageWaiting.hide();
-	      pagePlaying.show();
-		    sliders.forEach(function(value){
-		    	$("#" + value).val("50");
+	      pagePlaying.css('display', 'flex');
+		    sliders.forEach(function(value, index){
+		    	setVals[value](iniVals[index]);
 		    });
 	    });
 	    socket.on('finish', function(){
 	      console.log('finish');
-	      pageWaiting.show();
+	      pageWaiting.css('display', 'flex');
 	      pagePlaying.hide();
-	    });
-	    function listenSlider(name){
-	    	var slider = $("#" + name);
-	    	function onChange(){
-		      socket.emit(name, slider.val());
-	    	}
-			slider.bind("touchstart mousedown", function() {
-				onChange();
-				slider.bind("mousemove touchmove", onChange);
-			});
-			slider.bind("mouseup touchend", function() {
-				slider.unbind("mousemove touchend", onChange);
-			});
-			slider.bind("keydown", onChange);
-	    }
-	    sliders.forEach(function(value){
-	    	listenSlider(value);
 	    });
 	  });
 	</script>
