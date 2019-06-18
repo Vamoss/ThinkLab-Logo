@@ -1,9 +1,9 @@
 <!doctype html>
 <html>
-  <head>
-    <title>ThinkLab logo</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <style>
+	<head>
+		<title>ThinkLab logo</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<style>
 		@font-face {
 			font-family: 'proxima_nova_regular';
 			src: url('fonts/proximanova-regular-webfont.eot');
@@ -35,6 +35,29 @@
 			-ms-user-select: none;  /* IE 10+ */
 			user-select: none;  /* Likely future */ 
 		}
+		body{
+			background: linear-gradient(180deg, #64f8f2, #23D5AB, #58e895, #6d1fff, #E73C7E);
+			background-size: 100% 600%;
+			-webkit-animation: AnimationName 60s ease infinite;
+			-moz-animation: AnimationName 60s ease infinite;
+			animation: AnimationName 60s ease infinite;
+			color: #707070;
+		}
+		@-webkit-keyframes AnimationName {
+			0%{background-position:50% 0%}
+			50%{background-position:50% 100%}
+			100%{background-position:50% 0%}
+		}
+		@-moz-keyframes AnimationName {
+			0%{background-position:50% 0%}
+			50%{background-position:50% 100%}
+			100%{background-position:50% 0%}
+		}
+		@keyframes AnimationName { 
+			0%{background-position:50% 0%}
+			50%{background-position:50% 100%}
+			100%{background-position:50% 0%}
+		}
 		b{
 			font: 20px proxima_nova_regular, Helvetica, Arial;
 		}
@@ -54,8 +77,8 @@
 			min-height: 100vh;
 			padding: 30px;
 			display: flex;
-		    align-items: center;
-		    justify-content: center;
+				align-items: center;
+				justify-content: center;
 			text-align: center;
 		}
 		.container {
@@ -66,12 +89,8 @@
 			-webkit-border-radius: 10px;
 			-moz-border-radius: 10px;
 			border-radius: 10px;
-		}
-		#waiting {
-			background-image: linear-gradient(#08E3FF, #6D1FFF);
-		}
-		#waiting .container{
-			padding-top: 20%;
+			padding-top: 5%;
+			max-width: 400px;
 		}
 		#waitingMessage{
 			font-size: 28px;
@@ -82,28 +101,23 @@
 
 		}
 		#playing {
-			background-image: linear-gradient(#1CBDFF, #436FFF);
 			display: none;
-		}
-		#playing .container{
-			padding: 10% 0;
 		}
 		#playing .container img{
 			width: 80%;
 		}
 		#playing .property{
-			height: 65px;
+			height: 50px;
 			text-align: left;
-			margin: 10%;
+			margin: 20px;
 			margin-bottom: 0px;
-			margin-top: 20px;
 		}
 		#playing .slider{
 			display: block;
 			clear: both;
 			margin-right: auto;
 			margin-left: auto;
-			margin-top: 15px;
+			margin-top: 10px;
 			width: 100%;
 			background-image: linear-gradient(#436FFF, #1CBDFF);
 			height: 10px;
@@ -130,7 +144,7 @@
 		#playing .slider .value{
 			font: 18px proxima_nova_regular, Helvetica, Arial;
 			text-align: center;
-    		background-image: linear-gradient(90deg, #F5F4F4, #FFFFFF, #DBDBDB);
+				background-image: linear-gradient(90deg, #F5F4F4, #FFFFFF, #DBDBDB);
 			-webkit-border-radius: 30px;
 			-moz-border-radius: 30px;
 			border-radius: 30px;
@@ -141,98 +155,133 @@
 			padding-top: 3px;
 		}
 		#playing #waitingMessage2{
-			margin-top: 20px;
+			margin: 20px;
 		}
-    </style>
-  </head>
-  <body>
-  	<div class="page" id="waiting">
-  		<div class="container">
-  			<img src="images/logo-200x200.png" width="140" height="140" />
-	  		<div id="waitingMessage">Olá, você irá interagir com a marca em <b id="timeRemaining"></b> segundos.</div>
-	  	</div>
+		#waiting b{
+			font-size: 55px;
+			clear: both;
+    	display: block;
+		}
+		</style>
+	</head>
+	<body>
+		<div class="page" id="waiting">
+			<div class="container">
+				<img src="images/logo-200x200.png" width="140" height="140" />
+				<div id="waitingMessage">Olá, você irá interagir com a marca em <b id="timeRemaining"></b> segundos.</div>
+			</div>
 	</div>
 	<div class="page" id="playing">
-  		<div class="container">
-  			<img src="images/thinkrio-full.png" />
+			<div class="container">
+				<img src="images/thinkrio-full.png" />
 			<div class="property">Diversidade: <div class="slider" id="spikes"><div class="tracker"><div class="value">0</div></div></div></div>
 			<div class="property">Inovação: <div class="slider" id="length"><div class="tracker"><div class="value">0</div></div></div></div>
 			<div class="property">Sustentabilidade: <div class="slider" id="phase"><div class="tracker"><div class="value">0</div></div></div></div>
 			<div class="property">Experiência: <div class="slider" id="radius"><div class="tracker"><div class="value">0</div></div></div></div>
 			<div class="property">Pesquisa: <div class="slider" id="outterRadius"><div class="tracker"><div class="value">0</div></div></div></div>
-	  		<div id="waitingMessage2">Você ainda tem <b id="timeRemaining2"></b> segundos.</div>
-	  		<button id="btClose">Encerrar</button>
+				<div id="waitingMessage2">Você ainda tem <b id="timeRemaining2"></b> segundos.</div>
 		</div>
+	</div>
+		<div class="page" id="finished">
+			<div class="container">
+				<img src="images/logo-200x200.png" width="140" height="140" />
+				<div id="waitingMessage">Obrigado por participar.</div>
+				<button id="btRestart">Interagir novamente</button>
+			</div>
 	</div>
 	<script src="/socket.io/socket.io.js"></script>
 	<script src="./jquery-1.11.1.min.js"></script>
 	<script>
-	  $(function () {
-	    var socket = io();
+		$(function () {
+			var socket = io();
 
-	    var pageWaiting = $("#waiting");
-	    var pagePlaying = $("#playing");
-	    var timeRemaining = $("#timeRemaining");
+			var STATES = {WAITING: 0, PLAYING: 1, FINISHED: 2};
+			var state = STATES.WAITING;
+			var pageWaiting = $("#waiting");
+			var pagePlaying = $("#playing");
+			var pageFinished = $("#finished");
+			var timeRemaining = $("#timeRemaining");
+			var timeRemaining2 = $("#timeRemaining2");
+			var btRestart = $("#btRestart");
 
-	    var sliders = ["spikes", "length", "phase", "radius", "outterRadius"];
-	    var iniVals = [0.4482758620689655, 0.711, 0.393, 0.33, 0.83];
-	    var setVals = {};
-	    function listenSlider(name){
-	    	var slider = $("#" + name);
-	    	var tracker = slider.children(".tracker");
-	    	var value = tracker.children(".value");
-	    	var mouseContainer = $(window);
-	    	var valX = 0.5;
-	    	var pressX = 0;
-	    	function setVal(val){
-	    		valX = val;
-	    		if(valX<0) valX = 0;
-	    		if(valX>1) valX = 1;
-		    	var trackerPctWidth = tracker.width() / slider.width();
-	      		tracker.css('left', ((valX*(1-trackerPctWidth))*100) + '%');
-	      		let label = Math.floor(valX*100);
-	      		value.text(label);
-		    	socket.emit(name, valX * 100);
-	    	}
-	    	function onChange(e){
-	    		let tempX = e.originalEvent instanceof TouchEvent ? e.originalEvent.touches[0].pageX : e.pageX;
-	    		setVal(valX + (tempX - pressX) / slider.width());
-	    		pressX = tempX;
-	    	}
-			slider.bind("touchstart mousedown", e => {
-	    		pressX = e.originalEvent instanceof TouchEvent ? e.originalEvent.touches[0].pageX : e.pageX;
-				mouseContainer.bind("mousemove touchmove", onChange);
+			var sliders = ["spikes", "length", "phase", "radius", "outterRadius"];
+			var iniVals = [0.4483, 0.711, 0.393, 0.4, 0.94];
+			var setVals = {};
+			function listenSlider(name){
+				var slider = $("#" + name);
+				var tracker = slider.children(".tracker");
+				var value = tracker.children(".value");
+				var mouseContainer = $(window);
+				var valX = 0.5;
+				var pressX = 0;
+				function setVal(val){
+					valX = val;
+					if(valX<0) valX = 0;
+					if(valX>1) valX = 1;
+					var trackerPctWidth = tracker.width() / slider.width();
+					tracker.css('left', ((valX*(1-trackerPctWidth))*100) + '%');
+					let label = Math.floor(valX*100);
+					value.text(label);
+					socket.emit(name, valX * 100);
+				}
+				function onChange(e){
+					let tempX = e.originalEvent instanceof TouchEvent ? e.originalEvent.touches[0].pageX : e.pageX;
+					setVal(valX + (tempX - pressX) / slider.width());
+					pressX = tempX;
+				}
+				slider.bind("touchstart mousedown", e => {
+					pressX = e.originalEvent instanceof TouchEvent ? e.originalEvent.touches[0].pageX : e.pageX;
+					mouseContainer.bind("mousemove touchmove", onChange);
+				});
+				mouseContainer.bind("mouseup touchend", e => {
+					mouseContainer.unbind("mousemove touchmove", onChange);
+				});
+				return setVal;
+			}
+			sliders.forEach(function(value){
+					setVals[value] = listenSlider(value);
 			});
-			mouseContainer.bind("mouseup touchend", e => {
-				mouseContainer.unbind("mousemove touchmove", onChange);
-			});
-	    	return setVal;
-	    }
-	    sliders.forEach(function(value){
-	    	setVals[value] = listenSlider(value);
-	    });
+			btRestart.click(() => {
+				console.log("click")
+				socket.emit('join')
+			})
 
-	    socket.on('connect', function(time){
-	      socket.emit('client');
-	    });
-	    socket.on('time', function(time){
-	      console.log(time);
-	      timeRemaining.html(Math.round(time));
-	    });
-	    socket.on('start', function(){
-	      console.log('start');
-	      pageWaiting.hide();
-	      pagePlaying.css('display', 'flex');
-		    sliders.forEach(function(value, index){
-		    	setVals[value](iniVals[index]);
-		    });
-	    });
-	    socket.on('finish', function(){
-	      console.log('finish');
-	      pageWaiting.css('display', 'flex');
-	      pagePlaying.hide();
-	    });
-	  });
+			socket.on('connect', function(time){
+					socket.emit('client');
+			});
+			socket.on('time', function(time){
+				console.log(time);
+				if(state === STATES.PLAYING){
+					timeRemaining2.html(Math.round(time));
+				}else if(state === STATES.WAITING){
+					timeRemaining.html(Math.round(time));
+				}
+			});
+			socket.on('start', function(){
+				console.log('start');
+				state = STATES.PLAYING;
+				pageWaiting.hide();
+				pagePlaying.css('display', 'flex');
+				pageFinished.hide();
+				sliders.forEach(function(value, index){
+					setVals[value](iniVals[index]);
+				});
+			});
+			socket.on('finish', function(){
+				console.log('finish');
+				state = STATES.FINISHED;
+				pageWaiting.hide();
+				pagePlaying.hide();
+				pageFinished.css('display', 'flex');
+			});
+			socket.on('waiting', function(){
+				console.log('waiting');
+				state = STATES.WAITING;
+				pageWaiting.css('display', 'flex');
+				pagePlaying.hide();
+				pageFinished.hide();
+			});
+		});
 	</script>
-  </body>
+	</body>
 </html>

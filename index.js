@@ -14,7 +14,7 @@ Client.prototype.getPlayingTime = function() {
 }
 
 Client.prototype.isPlaying = function(){
-  	return this.playing;
+	return this.playing;
 }
 
 Client.prototype.play = function(){
@@ -27,6 +27,11 @@ Client.prototype.stop = function(){
 	this.playing = false;
 	this.socket.emit('finish');
 	sendToMaster('reset', 0);
+}
+
+Client.prototype.join = function(){
+	this.playing = false;
+	this.socket.emit('waiting');
 }
 
 function Master (socket) {
@@ -46,66 +51,71 @@ var SESSION_TIME = 30;
 
 io.on('connection', function(socket){
 
-  console.log('a user connected');
-  socket.emit('connect');
+	console.log('a user connected');
+	socket.emit('connect');
 
-  socket.on('master', function(){
-  	console.log('a user is a master');
-  	var master = new Master(socket);
-  	masters.push(master);
+	socket.on('master', function(){
+		console.log('a user is a master');
+		var master = new Master(socket);
+		masters.push(master);
 
-  	socket.on('disconnect', function(){
-		for(var i = masters.length-1; i >= 0; i--){
-			if(master.ID == masters[i].ID){
-				masters.splice(i, 1);
-			}
-		}
-	});
-  });
-
-  socket.on('client', function(){
-  	console.log('a user is a client');
-	  var client = new Client(socket);
-	  queue.push(client);
-
-	  socket.on('disconnect', function(){
-	    console.log('user disconnected');
-	    //remove from queue
-		for(var i = queue.length-1; i >= 0; i--){
-			if(client.ID == queue[i].ID){
-				if(queue[i].isPlaying()){
-					queue[i].stop();
+		socket.on('disconnect', function(){
+			for(var i = masters.length-1; i >= 0; i--){
+				if(master.ID == masters[i].ID){
+					masters.splice(i, 1);
 				}
-				queue.splice(i, 1);
 			}
-		}
-	  });
-	  socket.on('spikes', function(val){
-	  	if(client.isPlaying())
-	    	sendToMaster('spikes', val);
-	  });
-	  socket.on('length', function(val){
-	  	if(client.isPlaying())
-	    	sendToMaster('length', val);
-	  });
-	  socket.on('phase', function(val){
-	  	if(client.isPlaying())
-	    	sendToMaster('phase', val);
-	  });
-	  socket.on('radius', function(val){
-	  	if(client.isPlaying())
-	    	sendToMaster('radius', val);
-	  });
-	  socket.on('outterRadius', function(val){
-	  	if(client.isPlaying())
-	    	sendToMaster('outterRadius', val);
-	  });
-  });
+		});
+	});
+
+	socket.on('client', function(){
+		console.log('a user is a client');
+		var client = new Client(socket);
+		client.join();
+		queue.push(client);
+
+		socket.on('disconnect', function(){
+			console.log('user disconnected');
+			//remove from queue
+			for(var i = queue.length-1; i >= 0; i--){
+				if(client.ID == queue[i].ID){
+					if(queue[i].isPlaying()){
+						queue[i].stop();
+					}
+					queue.splice(i, 1);
+				}
+			}
+		});
+		socket.on('spikes', function(val){
+			if(client.isPlaying())
+				sendToMaster('spikes', val);
+		});
+		socket.on('length', function(val){
+			if(client.isPlaying())
+				sendToMaster('length', val);
+		});
+		socket.on('phase', function(val){
+			if(client.isPlaying())
+				sendToMaster('phase', val);
+		});
+		socket.on('radius', function(val){
+			if(client.isPlaying())
+				sendToMaster('radius', val);
+		});
+		socket.on('outterRadius', function(val){
+			if(client.isPlaying())
+				sendToMaster('outterRadius', val);
+		});
+		socket.on('join', function(val){
+			client.join();
+			queue.push(client);
+		});
+	});
 });
 
 app.use(express.static(__dirname + "/public"));
 http.listen(3000, function(){
-  console.log('listening on *:3000');
+	console.log('listening on *:3000');
 });
 
 function update(){
@@ -120,8 +130,8 @@ function update(){
 				queue[0].time = Date.now();
 			}else{
 				queue[0].stop();
-				//move the first to the last position
-				queue.push(queue.shift());
+				//remove the first
+				queue.shift();
 			}
 			update();
 			return;
@@ -129,8 +139,12 @@ function update(){
 
 		var remainingTime = SESSION_TIME - playingTime;
 
-		for(var i = 1; i < queue.length; i++){
-			queue[i].socket.emit('time', (i-1) * (SESSION_TIME+1) + remainingTime);
+		for(var i = 0; i < queue.length; i++){
+			if(i==0){
+				queue[i].socket.emit('time', remainingTime);
+			}else{
+				queue[i].socket.emit('time', (i-1) * (SESSION_TIME+1) + remainingTime);
+			}
 		}
 	}
 }

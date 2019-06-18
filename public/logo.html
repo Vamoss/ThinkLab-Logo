@@ -2,16 +2,61 @@
 <html>
   <head>
     <title>ThinkLab logo</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <style>
       * { margin: 0; padding: 0; box-sizing: border-box; }
       body {
         font: 13px Helvetica, Arial;
         width: 1920px;
         height: 1080px;
+        padding: 40px;
+      }
+      body{
+        background: linear-gradient(180deg, #64f8f2, #23D5AB, #58e895, #6d1fff, #E73C7E);
+        background-size: 100% 600%;
+        -webkit-animation: AnimationName 60s ease infinite;
+        -moz-animation: AnimationName 60s ease infinite;
+        animation: AnimationName 60s ease infinite;
+      }
+      @-webkit-keyframes AnimationName {
+        0%{background-position:50% 0%}
+        50%{background-position:50% 100%}
+        100%{background-position:50% 0%}
+      }
+      @-moz-keyframes AnimationName {
+        0%{background-position:50% 0%}
+        50%{background-position:50% 100%}
+        100%{background-position:50% 0%}
+      }
+      @keyframes AnimationName { 
+        0%{background-position:50% 0%}
+        50%{background-position:50% 100%}
+        100%{background-position:50% 0%}
+      }
+      #defaultCanvas0{
+        top: 50px;
+        left: 170px;
+        position: absolute;
+      }
+      .container{
+        background-color: #FFF;
+        width: 100%;
+        height: 100%;
+        -webkit-border-radius: 30px;
+        -moz-border-radius: 30px;
+        border-radius: 30px;
+      }
+      .logo{
+        position: absolute;
+        right: 200px;
+        bottom: 46%;
       }
     </style>
   </head>
   <body>
+      <div class="container">
+        <img class="logo" src="images/thinkrio-text.png" />
+      </div>
 	<script src="/socket.io/socket.io.js"></script>
   <script src="./jquery-1.11.1.min.js"></script>
 	<script src="/p5.min.js"></script>
@@ -29,7 +74,7 @@
     let destVals = JSON.parse(JSON.stringify(initialValues));
     function setup() {
       colorMode(HSB, 100);
-      createCanvas(1920, 1080);
+      createCanvas(1080-100, 1080-100);
       centerX = width/2;
       centerY = height/2;
       
@@ -39,8 +84,8 @@
       console.log(map(14, 1, 30, 0, 1));
       console.log(map(4.5, 0.1, TWO_PI, 0, 1));
       console.log(map(2.47, 0, TWO_PI, 0, 1));
-      console.log(map(132, 0, 400, 0, 1));
-      console.log(map(132, -200, 200, 0, 1));
+      console.log(map(132, 0, 330, 0, 1));
+      console.log(map(132, -150, 150, 0, 1));
       console.log("-------------")
     }
 
@@ -85,10 +130,10 @@
         destVals.phase = map(val, 0, 100, 0, TWO_PI);
       });
       socket.on('radius', function(val){
-        destVals.radius = map(val, 0, 100, 0, 400);
+        destVals.radius = map(val, 0, 100, 0, 330);
       });
       socket.on('outterRadius', function(val){
-        destVals.outterRadius = map(val, 0, 100, -200, 200);
+        destVals.outterRadius = map(val, 0, 100, -150, 150);
       });
       socket.on('reset', function(val){
         destVals = JSON.parse(JSON.stringify(initialValues));
