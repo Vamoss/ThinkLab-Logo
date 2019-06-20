@@ -1,7 +1,7 @@
 <!doctype html>
 <html>
   <head>
-    <title>ThinkLab logo</title>
+    <title>ThinkRio logo</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <style>
       * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -10,25 +10,24 @@
         width: 1920px;
         height: 1080px;
         padding: 40px;
-      }
-      body{
+        position: relative;
         background: linear-gradient(180deg, #64f8f2, #23D5AB, #58e895, #6d1fff, #E73C7E);
         background-size: 100% 600%;
-        -webkit-animation: AnimationName 60s ease infinite;
-        -moz-animation: AnimationName 60s ease infinite;
-        animation: AnimationName 60s ease infinite;
+        -webkit-animation: ColorTransition 60s ease infinite;
+        -moz-animation: ColorTransition 60s ease infinite;
+        animation: ColorTransition 60s ease infinite;
       }
-      @-webkit-keyframes AnimationName {
+      @-webkit-keyframes ColorTransition {
         0%{background-position:50% 0%}
         50%{background-position:50% 100%}
         100%{background-position:50% 0%}
       }
-      @-moz-keyframes AnimationName {
+      @-moz-keyframes ColorTransition {
         0%{background-position:50% 0%}
         50%{background-position:50% 100%}
         100%{background-position:50% 0%}
       }
-      @keyframes AnimationName { 
+      @keyframes ColorTransition { 
         0%{background-position:50% 0%}
         50%{background-position:50% 100%}
         100%{background-position:50% 0%}
@@ -49,17 +48,17 @@
       .logo{
         position: absolute;
         right: 200px;
-        bottom: 46%;
+        bottom: 100px;
       }
     </style>
   </head>
   <body>
       <div class="container">
-        <img class="logo" src="images/thinkrio-text.png" />
+        <img class="logo" src="images/calltoaction.png" />
       </div>
-	<script src="/socket.io/socket.io.js"></script>
+	<script src="./socket.io/socket.io.js"></script>
   <script src="./jquery-1.11.1.min.js"></script>
-	<script src="/p5.min.js"></script>
+	<script src="./p5.min.js"></script>
 	<script>
     const precision = 300;
     let initialValues = {
@@ -72,14 +71,48 @@
     //clone
     let config = JSON.parse(JSON.stringify(initialValues));
     let destVals = JSON.parse(JSON.stringify(initialValues));
+
+    let colors = [
+        {r: 43, g: 182, b: 115},
+        {r: 215, g: 223, b: 35},
+        {r: 251, g: 176, b: 64},
+        {r: 241, g: 90, b: 41},
+        {r: 239, g: 65, b: 54},
+        {r: 237, g: 28, b: 36},
+        {r: 158, g: 31, b: 99},
+        {r: 146, g: 39, b: 143},
+        {r: 102, g: 45, b: 145},
+        {r: 38, g: 34, b: 98},
+        {r: 43, g: 57, b: 144},
+        {r: 27, g: 117, b: 188},
+        {r: 0, g: 174, b: 239},
+        {r: 0, g: 167, b: 157},
+        {r: 43, g: 182, b: 115}
+    ];
+    function lerpColors(t, colors)
+    {
+        //t = from 0 to 1
+        //colors = array of {r, g, b} object, minimum 2 objects in array
+        let i = Math.floor(t*(colors.length-1));
+        if(i < 0) return colors[0];
+        if(i >= colors.length-1) return colors[colors.length-1];
+        
+        let percent = (t - i * (1 / (colors.length-1))) / (1 / (colors.length-1));
+        return {
+            r: colors[i].r + percent*(colors[i+1].r-colors[i].r),
+            g: colors[i].g + percent*(colors[i+1].g-colors[i].g),
+            b: colors[i].b + percent*(colors[i+1].b-colors[i].b)
+        }
+    }
+
     function setup() {
-      colorMode(HSB, 100);
       createCanvas(1080-100, 1080-100);
       centerX = width/2;
       centerY = height/2;
       
       noFill();
       strokeWeight(8);
+      /*
       console.log("-------------")
       console.log(map(14, 1, 30, 0, 1));
       console.log(map(4.5, 0.1, TWO_PI, 0, 1));
@@ -87,6 +120,7 @@
       console.log(map(132, 0, 330, 0, 1));
       console.log(map(132, -150, 150, 0, 1));
       console.log("-------------")
+      */
     }
 
     function draw() {
@@ -101,7 +135,8 @@
         rotate(1/config.spikes*TWO_PI);
         push();
         translate(0, -config.radius);
-        stroke((i/config.spikes*100+30)%100, 100, 100);
+        let result = lerpColors(i/config.spikes, colors);
+        stroke(result.r, result.g, result.b);
         beginShape();
         for(let a = 0; a < config.length; a += TWO_PI/precision){
           let x = cos(a+config.phase) * config.outterRadius;

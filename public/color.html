@@ -1,0 +1,52 @@
+<html>
+<body>
+    <script src="p5.min.js"></script>
+<script>
+    function lerpColors(t, colors)
+    {
+        //t = from 0 to 1
+        //colors = array of {r, g, b} object, minimum 2 objects in array
+        let i = Math.floor(t*(colors.length-1));
+        if(i < 0) return colors[0];
+        if(i >= colors.length-1) return colors[colors.length-1];
+        
+        let percent = (t - i * (1 / (colors.length-1))) / (1 / (colors.length-1));
+        return {
+            r: colors[i].r + percent*(colors[i+1].r-colors[i].r),
+            g: colors[i].g + percent*(colors[i+1].g-colors[i].g),
+            b: colors[i].b + percent*(colors[i+1].b-colors[i].b)
+        }
+    }
+    let colors = [
+        {r: 43, g: 182, b: 115},
+        {r: 215, g: 223, b: 35},
+        {r: 251, g: 176, b: 64},
+        {r: 241, g: 90, b: 41},
+        {r: 239, g: 65, b: 54},
+        {r: 237, g: 28, b: 36},
+        {r: 158, g: 31, b: 99},
+        {r: 146, g: 39, b: 143},
+        {r: 102, g: 45, b: 145},
+        {r: 38, g: 34, b: 98},
+        {r: 43, g: 57, b: 144},
+        {r: 27, g: 117, b: 188},
+        {r: 0, g: 174, b: 239},
+        {r: 0, g: 167, b: 157},
+        {r: 43, g: 182, b: 115}
+    ];
+    function setup() {
+        noStroke();
+        createCanvas(1000, 1000);
+        noLoop();
+    }
+    function draw() {
+        for(var i = 0; i < colors.length; i= i+0.1){
+        //for(let i = 0; i < 5; i++){//+=0.1){
+            let result = lerpColors(i/colors.length, colors);
+            fill(result.r, result.g, result.b);
+            rect(i*50, 0, 5, 100);
+        }
+    }
+</script>
+</body>
+</html>
