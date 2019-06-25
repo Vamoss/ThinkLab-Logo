@@ -87,8 +87,7 @@
         {r: 43, g: 57, b: 144},
         {r: 27, g: 117, b: 188},
         {r: 0, g: 174, b: 239},
-        {r: 0, g: 167, b: 157},
-        {r: 43, g: 182, b: 115}
+        {r: 0, g: 167, b: 157}
     ];
     function lerpColors(t, colors)
     {
@@ -136,7 +135,9 @@
         rotate(1/config.spikes*TWO_PI);
         push();
         translate(0, -config.radius);
-        let result = lerpColors((config.spikes-i-1)/config.spikes, colors);
+        let frac = map(i, 0, config.spikes-1, (config.spikes-1)/config.spikes, 0);
+        if(frac<0) frac = 1-frac;
+        let result = lerpColors(frac, colors);
         stroke(result.r, result.g, result.b);
         beginShape();
         for(let a = 0; a < config.length; a += TWO_PI/precision){
