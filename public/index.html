@@ -75,7 +75,7 @@
 		.page {
 			width: 100%;
 			min-height: 100vh;
-			padding: 30px;
+			padding: 20px;
 			display: flex;
 				align-items: center;
 				justify-content: center;
@@ -161,6 +161,30 @@
 			font-size: 55px;
 			clear: both;
     	display: block;
+		}
+		@media all and (max-height: 650px) {
+			#playing .property{
+			    height: 40px;
+    			margin: 15px;
+			}
+		}
+		@media all and (max-height: 500px) {
+			.container {
+				padding-top: 5px;
+			}
+			#playing .property{
+			    margin: 10px;
+			}
+			#playing .slider .tracker{
+				height: 20px;
+				top: -7px;
+			}
+			#playing .slider .value{
+				font-size: 16px;
+				margin-top: 1px;
+				height: 16px;
+				padding-top: 0px;
+			}
 		}
 		</style>
 	</head>
